@@ -1,0 +1,9 @@
+{
+	"id": "better-cards",
+	"name": "Better Cards",
+	"version": "1.0.0",
+	"minAppVersion": "1.10.0",
+	"description": "A Bases view that displays notes as cards with enhanced cover image options including colors, gradients, and content previews.",
+	"author": "caeochoa",
+	"isDesktopOnly": false
+}

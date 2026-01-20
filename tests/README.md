@@ -9,6 +9,16 @@ The test suite uses:
 - **jsdom** - DOM implementation for testing DOM manipulation
 - **Mock factories** - Custom mocks for Obsidian API types
 
+## Installation
+
+When installing dependencies for the first time, you may need to use:
+
+```bash
+npm install --legacy-peer-deps
+```
+
+This is due to peer dependency conflicts between vitest/jsdom and other dependencies.
+
 ## Running Tests
 
 ```bash

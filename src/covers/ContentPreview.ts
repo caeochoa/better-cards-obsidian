@@ -37,7 +37,7 @@ export function renderContentPreview(
 	});
 }
 
-function getContentExcerpt(content: string, maxLength: number): string {
+export function getContentExcerpt(content: string, maxLength: number): string {
 	// Remove frontmatter
 	const frontmatterMatch = content.match(/^---\n[\s\S]*?\n---\n/);
 	if (frontmatterMatch) {

@@ -79,12 +79,17 @@ export function renderCard(
 	}
 }
 
-function resolveImageUrl(
+export function resolveImageUrl(
 	app: App,
 	value: unknown,
 	contextFile: TFile
 ): string | null {
 	if (!value) return null;
+
+	// Handle array values first (before generic object check, since arrays are objects)
+	if (Array.isArray(value) && value.length > 0) {
+		return resolveImageUrl(app, value[0], contextFile);
+	}
 
 	// Handle string values
 	if (typeof value === "string") {
@@ -148,11 +153,6 @@ function resolveImageUrl(
 				return resolveImageUrl(app, strValue, contextFile);
 			}
 		}
-	}
-
-	// Handle array values (take first item)
-	if (Array.isArray(value) && value.length > 0) {
-		return resolveImageUrl(app, value[0], contextFile);
 	}
 
 	return null;

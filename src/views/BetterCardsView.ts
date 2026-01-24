@@ -98,6 +98,10 @@ export class BetterCardsView extends BasesView {
 
 		// Handle click to open note
 		cardEl.addEventListener("click", (e) => {
+			// Don't open card if clicking on a link or tag
+			if ((e.target as HTMLElement).closest('a, .tag')) {
+				return;
+			}
 			const isNewTab = e.ctrlKey || e.metaKey;
 			this.app.workspace.openLinkText(file.path, "", isNewTab);
 		});

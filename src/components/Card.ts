@@ -18,6 +18,9 @@ export function renderCard(
 	const file = entry.file;
 	if (!file) return;
 
+	// Use the app's render context for property rendering (provides proper context for tags/links)
+	const renderContext = app.renderContext;
+
 	// Create cover container
 	const coverEl = cardEl.createDiv({ cls: "better-cards-cover" });
 
@@ -63,16 +66,32 @@ export function renderCard(
 		for (let i = 1; i < options.displayPropertyIds.length; i++) {
 			const propId = options.displayPropertyIds[i];
 			const value = entry.getValue(propId);
-			// Show property if value exists (not null/undefined) - don't use isTruthy() as it filters out 0
-			if (value !== null && value !== undefined) {
-				const strValue = value.toString();
-				if (strValue !== "") {
-					const propEl = propsEl.createDiv({ cls: "better-cards-property" });
-					const displayName = options.config.getDisplayName(propId);
-					const labelEl = propEl.createSpan({ cls: "better-cards-property-label" });
-					labelEl.setText(displayName + ":");
-					const valueEl = propEl.createSpan({ cls: "better-cards-property-value" });
-					valueEl.setText(strValue);
+			// Show property if value exists and is truthy (filters out null, undefined, and NullValue)
+			if (value !== null && value !== undefined && value.isTruthy()) {
+				const propEl = propsEl.createDiv({ cls: "better-cards-property" });
+				const displayName = options.config.getDisplayName(propId);
+				const labelEl = propEl.createSpan({ cls: "better-cards-property-label" });
+				labelEl.setText(displayName + ":");
+				const valueEl = propEl.createSpan({ cls: "better-cards-property-value" });
+
+				try {
+					// Try to use renderTo for proper type-specific rendering (tags, links, etc.)
+					value.renderTo(valueEl, renderContext);
+
+					// If renderTo succeeded but produced no content (empty element), fall back to toString
+					if (valueEl.innerHTML.trim() === "") {
+						const strValue = value.toString();
+						if (strValue && strValue !== "null" && strValue !== "[object Object]") {
+							valueEl.setText(strValue);
+						}
+					}
+				} catch (error) {
+					// Fallback to string rendering if renderTo fails
+					console.warn("Failed to render property value, falling back to string:", error);
+					const strValue = value.toString();
+					if (strValue && strValue !== "null" && strValue !== "[object Object]") {
+						valueEl.setText(strValue);
+					}
 				}
 			}
 		}

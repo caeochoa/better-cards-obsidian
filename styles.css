@@ -197,6 +197,31 @@
 	white-space: nowrap;
 }
 
+/* Styling for tags in property values */
+.better-cards-property-value .tag {
+	font-size: 11px;
+	margin-right: 4px;
+	display: inline-block;
+}
+
+/* Styling for links in property values */
+.better-cards-property-value a.internal-link {
+	text-decoration: none;
+	color: var(--link-color);
+}
+
+.better-cards-property-value a.internal-link:hover {
+	text-decoration: underline;
+}
+
+/* Handle multiple items in property values */
+.better-cards-property-value {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px;
+}
+
 /* Dark theme adjustments */
 .theme-dark .better-cards-card {
 	background: var(--background-secondary);
